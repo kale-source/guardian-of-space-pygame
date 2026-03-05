@@ -32,25 +32,14 @@ class Player(Entity):
 
     def _move(self, keys):
         """Movimento com setas"""
-        if keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.pos_x -= self.speed
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.pos_x += self.speed
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
             self.pos_y -= self.speed
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.pos_y += self.speed
-        
-        # Alternativa WASD
-        if keys[pygame.K_a]:
-            self.pos_x -= self.speed
-        if keys[pygame.K_d]:
-            self.pos_x += self.speed
-        if keys[pygame.K_w]:
-            self.pos_y -= self.speed
-        if keys[pygame.K_s]:
-            self.pos_y += self.speed
-
 
         # Limitar bounding box
         self.pos_x = max(0.0, min(self.pos_x, settings.WIDTH - self.width))

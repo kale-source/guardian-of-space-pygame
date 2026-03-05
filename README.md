@@ -1,5 +1,10 @@
 # 🚀 Guardians of Space
 
+![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=flat&logo=python&logoColor=white)
+![Pygame](https://img.shields.io/badge/Pygame-2.6+-00B140?style=flat&logo=python&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-2.0+-E92063?style=flat&logo=pydantic&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)
+
 > Shooter espacial desenvolvido em Python com Pygame para a disciplina de **Computação Gráfica**, demonstrando domínio de Engenharia de Software, Programação Orientada a Objetos e princípios de arquitetura limpa.
 
 ---
@@ -7,7 +12,7 @@
 ## 📋 Índice
 
 - [Sobre o Projeto](#-sobre-o-projeto)
-- [Gameplay](#-gameplay)
+- [Screenshots](#-screenshots)
 - [Tecnologias](#-tecnologias)
 - [Pré-requisitos](#-pré-requisitos)
 - [Instalação](#-instalação)
@@ -15,8 +20,6 @@
 - [Como Jogar](#-como-jogar)
 - [Arquitetura](#-arquitetura)
 - [Estrutura de Pastas](#-estrutura-de-pastas)
-- [Cálculos e Coordenadas Espaciais](#-cálculos-e-coordenadas-espaciais)
-- [Por Que as Estrelas Não Interferem](#-por-que-as-estrelas-não-interferem)
 - [Princípios Aplicados](#-princípios-aplicados)
 - [Progressão e Mecânicas](#-progressão-e-mecânicas)
 
@@ -24,34 +27,37 @@
 
 ## 🎮 Sobre o Projeto
 
-Guardians of Space é um shooter de sobrevivência com visão top-down onde o jogador pilota uma nave espacial e deve destruir ou desviar de meteoros que caem continuamente. O jogo foi **refatorado de uma arquitetura monolítica** para um sistema modular com separação clara de responsabilidades, escalável para adição de novos inimigos, bosses e mecânicas sem gerar código espaguete.
+**Guardians of Space** é um shooter de sobrevivência com visão top-down onde o jogador pilota uma nave espacial e deve destruir ou desviar de meteoros que caem continuamente.
+
+O jogo foi **refatorado de uma arquitetura monolítica** para um sistema modular com separação clara de responsabilidades, escalável para adição de novos inimigos, bosses e mecânicas sem gerar código espaguete.
 
 ---
 
-## 🕹️ Gameplay
+## 📸 Screenshots
 
-- Desvie e destrua meteoros que caem do topo da tela
-- O jogo termina se você **for atingido** por um meteoro ou se **10 meteoros escaparem**
-- A cada 20 segundos o level sobe, aumentando velocidade e frequência dos meteoros
-- A cada 20 meteoros destruídos, escolha um **upgrade** para sua nave
-- Sobreviva o maior tempo possível e maximize seu score
+> _Adicione aqui capturas de tela do jogo em execução._
+>
+> Sugestões:
+> - Tela de gameplay principal
+> - Menu de upgrade
+> - Tela de Game Over
 
 ---
 
 ## 🛠️ Tecnologias
 
 | Tecnologia | Versão | Uso |
-|---|---|---|
-| Python | 3.12+ | Linguagem principal |
-| Pygame | 2.6+ | Engine gráfica e de input |
-| Pydantic | 2.0+ | Validação de configurações |
-| Pydantic Settings | 2.0+ | Gerenciamento de settings com type checking |
+|------------|--------|-----|
+| [Python](https://www.python.org/) | 3.12+ | Linguagem principal |
+| [Pygame](https://www.pygame.org/) | 2.6+ | Engine gráfica e de input |
+| [Pydantic](https://docs.pydantic.dev/) | 2.0+ | Validação de configurações |
+| [Pydantic Settings](https://docs.pydantic.dev/latest/concepts/pydantic_settings/) | 2.0+ | Gerenciamento de settings com type checking |
 
 ---
 
 ## 📦 Pré-requisitos
 
-- Python 3.12 ou superior
+- Python **3.12** ou superior
 - pip
 
 ---
@@ -59,12 +65,14 @@ Guardians of Space é um shooter de sobrevivência com visão top-down onde o jo
 ## 🚀 Instalação
 
 **1. Clone o repositório**
+
 ```bash
-git clone https://github.com/seu-usuario/guardian-of-space-pygame.git
-cd guardian-of-space-pygame
+git clone https://github.com/kale-source/guardians-of-space-pygame.git
+cd guardians-of-space-pygame
 ```
 
 **2. Crie e ative um ambiente virtual**
+
 ```bash
 python -m venv .venv
 
@@ -76,11 +84,13 @@ source .venv/bin/activate
 ```
 
 **3. Instale as dependências**
+
 ```bash
 pip install pygame python-dotenv pydantic pydantic-settings
 ```
 
 **4. Execute o jogo**
+
 ```bash
 python main.py
 ```
@@ -98,104 +108,114 @@ WIDTH=800
 HEIGHT=600
 ```
 
-Se o arquivo não existir, os valores padrão (`800x600`) são usados automaticamente.
+> Se o arquivo não existir, os valores padrão (`800x600`) são usados automaticamente.
+
+### Sistema de Configurações
+
+O projeto utiliza **Pydantic Settings** para gerenciamento robusto de configurações:
+
+| Recurso | Descrição |
+|---------|-----------|
+| ✅ Validação de tipos | Todas as configurações são tipadas e validadas |
+| ✅ Carregamento de `.env` | Variáveis podem ser sobrescritas por arquivo `.env` |
+| ✅ Defaults seguros | Valores padrão bem definidos para cada configuração |
+| ✅ Fonte única da verdade | Toda configuração vem da classe `Settings` |
+
+**Como usar:**
+
+```python
+from settings import settings
+
+screen_width = settings.WIDTH
+player_speed = settings.PLAYER_SPEED
+font = settings.FONT_MAIN
+```
 
 ---
 
-## 🎮 Como Jogar
+## 🎯 Como Jogar
 
-| Controle | Ação |
-|---|---|
-| **Setas** ou **WASD** | Mover nave |
-| **ESPAÇO** | Segurar para carregar disparo / Soltar para atirar |
-| **S** | Toggle das estrelas (debug) |
+| Tecla | Ação |
+|-------|------|
+| `←` `→` `↑` `↓` | Mover a nave |
+| `ESPAÇO` _(tap)_ | Disparar bala normal |
+| `ESPAÇO` _(segurar)_ | Carregar tiro — solte para disparar |
+| `S` | Ligar/desligar estrelas do fundo |
+| `ESC` | Reiniciar após game over |
 
-**Dicas:**
-- Mantenha a nave centralizada para maior mobilidade
-- Carregue o disparo para aumentar dano (até 4x) e tamanho da bala
-- Escolha upgrades estratégicos: velocidade para desviar, dano para destruir, cooldown para atirar mais rápido
+### ⚡ Sistema de Tiro Carregado
+
+Segurar `ESPAÇO` por até **1.5 segundos** carrega o tiro progressivamente. Um arco abaixo da nave indica a carga atual, mudando de cor de **ciano → laranja**.
+
+> Tiros carregados são maiores, mais danosos (até **4×**) e causam mais dano a meteoros com muito HP.
+
+### 🔧 Menu de Upgrade
+
+A cada **20 meteoros destruídos** o jogo pausa e exibe duas opções:
+
+| Tecla | Upgrade | Efeito |
+|-------|---------|--------|
+| `[1]` | Velocidade da Nave | +2 de velocidade de movimento |
+| `[2]` | Potência dos Tiros | +1 de dano base em todos os disparos |
+
+Use `[1]` / `[2]`, as setas `←` `→` e `ENTER` para navegar e confirmar.
 
 ---
 
 ## 🏗️ Arquitetura
 
-O projeto segue uma **arquitetura modular em camadas** com total separação de responsabilidades:
+O projeto segue o padrão **State Machine** combinado com uma hierarquia de entidades baseada em herança, totalmente integrada ao sistema de sprites do Pygame.
 
-### Fluxo de Dados
+### Diagrama de Estados
 
 ```
-settings.py (Configuração)
-    ↓
-main.py (Entry point)
-    ↓
-core/game.py (Game Loop & State Machine)
-    ├→ components/ (Entidades do jogo)
-    │   ├→ player.py
-    │   ├→ meteor.py
-    │   ├→ bullet.py
-    │   └→ stars.py
-    └→ core/entity.py (Base class)
+         ┌─────────────┐
+    ┌───▶│ PlayingState │◀────────────┐
+    │    └──────┬───────┘             │
+    │           │ 10 escaped          │ ESC
+    │           │ ou colisão          │
+    │           ▼                     │
+    │    ┌─────────────┐              │
+    │    │GameOverState│──────────────┘
+    │    └─────────────┘
+    │
+    │    ┌──────────────┐
+    └────│ UpgradeState │  (a cada 20 kills)
+         └──────────────┘
 ```
 
-### Camadas Principais
+### Hierarquia de Entidades
 
-#### 1️⃣ **Camada de Configuração** (`settings.py`)
-- **Responsabilidade:** Gerenciar todas as constantes e parâmetros do jogo
-- **Tecn:** Pydantic + Pydantic Settings para validação e type checking
-- **Benefício:** Alterações fáceis sem mexer no código; suporte a `.env`
-
-```python
-WIDTH: int = 800
-HEIGHT: int = 600
-PLAYER_SPEED: int = 6
+```
+pygame.sprite.Sprite
+        │
+      Entity          ← pos_x/y (float), image, rect, mask
+        │
+   ┌────┼────┐
+Player Bullet Meteor
 ```
 
-#### 2️⃣ **Camada de Entidades** (`core/entity.py`)
-- **Responsabilidade:** Base genérica para todos os objetos do jogo
-- **Herança:** `pygame.sprite.Sprite`
-- **Funcionalidades:**
-  - Gerenciamento de posição (`pos_x`, `pos_y`) em **float**
-  - Sincronização automática com `rect` (int) para renderização
-  - Suporte a máscaras de colisão per-pixel
-  - Método `_build_image()` para subclasses customizarem o visual
+### Fluxo por Frame
 
-```python
-class Entity(pygame.sprite.Sprite):
-    def __init__(self, x: float, y: float, width: int, height: int):
-        self.pos_x = float(x)  # Precisão em float
-        self.pos_y = float(y)
-        self.rect = self.image.get_rect(topleft=(int(x), int(y)))
 ```
-
-#### 3️⃣ **Camada de Componentes** (`components/`)
-Cada entidade do jogo herda de `Entity` e implementa sua própria lógica:
-
-**Player** (`player.py`)
-- Movimento com limites de tela
-- Sistema de carga de disparo
-- Aplicação de upgrades (velocidade, dano, cooldown)
-
-**Meteor** (`meteor.py`)
-- Movimento vertical descendente
-- Sistema de HP (danificável)
-- Mudança dinâmica de cor baseado em dano
-- Máscara de colisão por pixel usando `pygame.mask`
-
-**Bullet** (`bullet.py`)
-- Movimento vertical ascendente
-- Tamanho e dano escaláveis por carga
-- Cor interpolada (lerp) entre dois estados
-
-**StarField** (`stars.py`)
-- Campo de fundo com 100+ estrelas
-- Efeito de parallax (velocidades variadas)
-- Piscada dinâmica (não interfere em colisões)
-
-#### 4️⃣ **Camada de Lógica** (`core/game.py`)
-- **State Machine:** "playing", "game_over", "upgrade"
-- **Physics:** Atualização de posições a cada frame
-- **Colisões:** Detecção per-pixel com `pygame.sprite.collide_mask`
-- **Event Loop:** Entrada do usuário e saída gráfica
+Game.run()
+  ├── clock.tick(60)
+  ├── pygame.event.get()
+  ├── state.handle_events(events)
+  ├── state.update()
+  │     └── [PlayingState]
+  │           ├── _tick_timer()
+  │           ├── _check_level_up()
+  │           ├── _handle_player()
+  │           ├── _spawn_meteors()
+  │           ├── _update_meteors()
+  │           ├── _update_bullets()
+  │           ├── _check_bullet_meteor_collisions()
+  │           └── _check_player_meteor_collision()
+  ├── state.draw(screen)
+  ├── pygame.display.flip()
+  └── StateManager.change() se state.done
+```
 
 ---
 
@@ -203,349 +223,72 @@ Cada entidade do jogo herda de `Entity` e implementa sua própria lógica:
 
 ```
 guardians-of-space-pygame/
-├── main.py                    # Entry point do jogo
-├── settings.py                # Configurações centralizadas
-├── README.md                  # Este arquivo
-├── .env.example              # Template de variáveis de ambiente
-├── .gitignore
+│
+├── main.py                     # Ponto de entrada
+├── settings.py                 # Todas as constantes e configurações
+├── .env                        # Variáveis de ambiente (opcional)
+│
 ├── core/
-│   ├── __init__.py
-│   ├── entity.py             # Base class para todas as entidades
-│   └── game.py               # Game loop e state machine
-└── components/
-    ├── __init__.py
-    ├── player.py             # Nave do jogador
-    ├── meteor.py             # Inimigos que caem
-    ├── bullet.py             # Projéteis
-    └── stars.py              # Background de estrelas
+│   ├── entity.py               # Classe base Entity(pygame.sprite.Sprite)
+│   ├── state_manager.py        # Gerencia transições entre estados
+│   └── game.py                 # Loop principal + inicialização
+│
+├── states/
+│   ├── base_state.py           # Contrato abstrato (ABC)
+│   ├── playing_state.py        # Lógica do jogo em execução
+│   ├── game_over_state.py      # Tela de fim de jogo
+│   └── upgrade_state.py        # Menu de seleção de upgrade
+│
+├── components/
+│   └── stars.py                # Campo de estrelas com efeito parallax
+│
+└── entities/
+    ├── player.py               # Nave do jogador
+    ├── bullet.py               # Projétil com sistema de carga
+    └── meteor.py               # Meteoro com HP e feedback visual
 ```
 
 ---
 
-## 🧮 Cálculos e Coordenadas Espaciais
+## 🧱 Princípios Aplicados
 
-### Por Que Precisamos de Cálculos no Espaço?
+### Separação de Preocupações
+Cada arquivo tem uma única responsabilidade. Renderização, física, input e estados de jogo estão completamente isolados.
 
-No Pygame (e em qualquer engine gráfica), o sistema de coordenadas é **cartesiano**, mas com uma peculiaridade: **Y cresce para baixo** (não como em matemática pura). Isso exige cálculos específicos para movimento correto.
+### Herança e Polimorfismo
+`Entity` provê a base comum — `pos_x/y`, `image`, `rect` e integração com o sistema de sprites do Pygame. Subclasses (`Player`, `Bullet`, `Meteor`) sobrescrevem apenas `_build_image()` e `update()`.
 
-#### Sistema de Coordenadas Pygame
+### Máquina de Estados (State Pattern)
+`BaseState` define o contrato com `handle_events → update → draw`. O `StateManager` coordena as transições e injeta contexto entre estados via `_inject_context()`, mantendo acoplamento zero entre eles.
 
-```
-(0,0) ──────────────→ X (aumenta para direita)
-  │
-  │
-  ↓ Y (aumenta para BAIXO)
-  │
-  │
-(800, 600)
-```
+### Centralização de Dados
+Todo valor configurável vive em `settings.py`. Alterar dificuldade, velocidade ou frequência de upgrades nunca exige tocar nas classes.
 
-**Diferença Crítica:**
-- **Matemática Pura:** Y aumenta para cima
-- **Pygame:** Y aumenta para baixo
-- **Consequência:** Lógica de movimento deve considerar isso explicitamente
+### Colisão Pixel-Perfect
+Substituição do cálculo manual com `math.sqrt` por `pygame.sprite.collide_mask`, usando máscaras de bits geradas a partir das Surfaces das entidades.
 
-### 1️⃣ Movimento Linear com Velocidade Escalar
-
-Qualquer movimento consiste em três componentes:
-
-**Equação Geral:**
-$$\text{nova\_posição} = \text{posição\_atual} + \text{velocidade} \times \Delta t$$
-
-**No Pygame (discretizado por frame):**
-$$\text{nova\_posição} = \text{posição\_atual} + \text{velocidade}$$
-
-#### Exemplo: Player se movendo para cima
-
-```python
-if keys[pygame.K_UP]:
-    self.pos_y -= self.speed  # DECREMENTAR Y para ir "para cima"
-```
-
-Por quê? Porque em Pygame, Y=0 está no topo. Para mover visualmente "para cima", devemos **reduzir** Y.
-
-#### Exemplo: Meteoro caindo
-
-```python
-def update(self):
-    self.pos_y += self.speed  # INCREMENTAR Y para cair
-```
-
-Como Y aumenta para baixo, incrementar a posição faz o meteoro cair naturalmente.
-
-#### Exemplo: Bala subindo
-
-```python
-def update(self):
-    self.pos_y -= self.speed  # DECREMENTAR Y para subir
-```
-
-### 2️⃣ Movimento em Qualquer Direção: Componentes X e Y
-
-Para movimento em qualquer ângulo, decompomos em componentes:
-
-**Vetor de Movimento:**
-$$\vec{v} = (v_x, v_y)$$
-
-**Aplicação por Frame:**
-```python
-self.pos_x += velocity_x
-self.pos_y += velocity_y
-```
-
-#### Exemplo Real: Meteoro em Queda Oblíqua
-
-Se quiséssemos um meteoro que cai e se move horizontalmente:
-
-```python
-# Cai + move levemente para esquerda
-self.pos_y += self.speed_y  # Cai
-self.pos_x -= self.drift_x  # Move esquerda
-```
-
-### 3️⃣ Sincronização Float → Int
-
-No Pygame, **posições precisam ser inteiras** para renderização (pixels), mas internamente usamos **floats** para precisão matemática:
-
-```python
-class Entity:
-    def __init__(self, x: float, y: float, ...):
-        self.pos_x = float(x)        # Precisão em float
-        self.pos_y = float(y)
-        self.rect = pygame.Rect(...)  # Inteiro para renderização
-
-    def _sync_rect(self):
-        """Sincroniza posição float com rect inteiro"""
-        self.rect.x = int(self.pos_x)  # Converte float → int
-        self.rect.y = int(self.pos_y)
-```
-
-**Por que?**
-- Movimento em float mantém suavidade mesmo com velocidades < 1 pixel/frame
-- Renderizar sem float causaria "saltos" visuais
-- Exemplo: velocidade = 0.5 pixels/frame
-  - Frame 1: pos_x = 0.5 (render em x=0)
-  - Frame 2: pos_x = 1.0 (render em x=1)
-  - **Sem float:** alternar entre 0 e 1 sem transição suave
-
-### 4️⃣ Limites de Tela: Clamping
-
-Para impedir que a nave saia da tela, usamos **clamping** (limitação):
-
-$$\text{pos} = \max(0, \min(\text{pos}, \text{max\_pos}))$$
-
-**Código:**
-```python
-# Limitar bounding box
-self.pos_x = max(0.0, min(self.pos_x, settings.WIDTH - self.width))
-self.pos_y = max(0.0, min(self.pos_y, settings.HEIGHT - self.height))
-self._sync_rect()
-```
-
-**Lógica:**
-1. `max(0.0, pos_x)` → Garante que não saia pela esquerda
-2. `min(pos_x, WIDTH - width)` → Garante que não saia pela direita
-3. Mesma lógica para Y (cima/baixo)
-
-### 5️⃣ Detecção de Colisão com Coordenadas
-
-Colisões usam **máscaras per-pixel**, que são construídas a partir da surface renderizada:
-
-```python
-# Em Meteor
-self.mask = pygame.mask.from_surface(self.image)
-
-# Em Game Loop
-hits = pygame.sprite.groupcollide(
-    bullet_group, meteor_group,
-    True, False,
-    pygame.sprite.collide_mask  # ← Usar máscara, não rect
-)
-```
-
-**Vantagem:** Colisão precisa, não só por caixa limitante, mas pelos **pixels reais** da imagem.
-
----
-
-## ⭐ Por Que as Estrelas Não Interferem
-
-Esta é uma questão de **separação de responsabilidades e arquitetura de colisão**.
-
-### O Problema
-
-Você poderia pensar: "Se desenhamos 100+ estrelas na tela, por que não colidem com a nave?"
-
-### A Resposta
-
-#### 1️⃣ **Não São Sprites no Sentido de Pygame**
-
-```python
-# StarField usa objetos simples, NÃO pygame.sprite.Sprite
-class Star:
-    def __init__(self):
-        self.x = ...
-        self.y = ...
-        # SEM herança de pygame.sprite.Sprite!
-    
-    def draw(self, screen):
-        pygame.draw.circle(screen, color, (self.x, int(self.y)), size)
-```
-
-**Consequência:** Não fazem parte de nenhum `pygame.sprite.Group`, portanto não participam de `groupcollide()`.
-
-```python
-# Colisão APENAS entre grupos sprite explícitos
-hits = pygame.sprite.groupcollide(
-    bullet_group,      # ← Sprites
-    meteor_group,      # ← Sprites
-    True, False,
-    pygame.sprite.collide_mask
-)
-```
-
-#### 2️⃣ **São Apenas Visuais do Background**
-
-As estrelas desempenham papel narrativo/visual:
-- ✅ Criar atmosfera de espaço
-- ✅ Efeito de parallax (profundidade)
-- ❌ Interagir com física do jogo
-
-**Design Decision:** Mantê-las fora do loop de colisão melhora performance e clareza.
-
-#### 3️⃣ **Toggle para Debug**
-
-Existe um hotkey para ligar/desligar as estrelas:
-
-```python
-# Em game.py._update_playing()
-for event in events:
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
-        self.star_field.toggle()
-```
-
-Isso prova que são visuais <u>decorativos</u>, não mecânica de jogo.
-
-### Analogia Visual
-
-Imagine um jogo de carro top-down:
-- **Marcações da estrada** = Visuais (sem colisão)
-- **Outros carros** = Sprites com colisão
-- **Fundo estrelado** = Visuais (sem colisão)
-
-No Guardians of Space:
-- **Estrelas** = Marcações da estrada (visuais)
-- **Nave, meteoros, balas** = Entidades com colisão
-
----
-
-## 🎯 Princípios Aplicados
-
-### SOLID
-
-| Princípio | Aplicação | Benefício |
-|---|---|---|
-| **S** - Single Responsibility | Cada classe `Entity` tem um propósito único | Fácil manutenção |
-| **O** - Open/Closed | Aberto para extensão (herança), fechado para modificação | Adicionar novos inimigos sem mexer na base |
-| **L** - Liskov Substitution | Qualquer `Entity` pode substituir outra | Polimorfismo natural |
-| **I** - Interface Segregation | `_build_image()`, `update()` bem definidos | Contrato claro |
-| **D** - Dependency Inversion | Dependências injetadas (`settings`) | Baixo acoplamento |
-
-### DRY (Don't Repeat Yourself)
-
-- **Entity:** Base única para todas as entidades
-- **Settings:** Constantes centralizadas
-- **Métodos auxiliares:** `_sync_rect()`, `_lerp_color()` reutilizáveis
-
-### Clean Code
-
-- Nomes descritivos: `escaped_meteors`, `charge_ratio`, `_build_image()`
-- Métodos pequenos e focados
-- Comentários explicam **por quê**, não **o quê**
-- Uso de type hints
+### Timer Confiável
+Substituição da contagem frágil de frames por `pygame.time.get_ticks()`, independente de variações de FPS.
 
 ---
 
 ## 📈 Progressão e Mecânicas
 
-### Sistema de Levels
+### Escalonamento por Level
 
-A cada 20 segundos:
-- Aumenta velocidade dos meteoros
-- Aumenta frequência de spawn
+| Atributo | Fórmula |
+|----------|---------|
+| Velocidade dos meteoros | `random(1.5, 8.0) + level × 0.5` |
+| HP dos meteoros | `1 + level` |
+| Delay de spawn | `max(15, 60 - (level - 1) × 5)` frames |
 
-```python
-current_delay = max(
-    settings.METEOR_SPAWN_DELAY_MIN,
-    settings.METEOR_SPAWN_DELAY - (level - 1) * settings.METEOR_SPAWN_DELAY_SCALE
-)
-```
+### Upgrades Acumulativos
 
-### Sistema de Score
+Os upgrades são **permanentes** durante a partida e acumulam a cada 20 kills. Não há limite de vezes — um jogador habilidoso pode acumular múltiplos upgrades de dano e velocidade ao longo de uma partida longa.
 
-- **+1 ponto** por meteoro destruído
-- **-10 vidas** se 10 meteoros escaparem
-- **Teto:** Quando atingir X kills, escolhe upgrade
+### Condições de Derrota
 
-### Upgrades Disponíveis
+- 💥 Colisão direta com um meteoro
+- ☄️ 10 meteoros escapando pela base da tela
 
-1. **Velocidade** (+6 pixels/frame)
-2. **Dano** (+1 ao máximo de dano)
-3. **Cooldown** (-1 ao delay entre tiros)
-
-### Dificuldade Progressiva
-
-```
-Tempo →
-  0-20s:  Easy     (meteoros lentos, poucos)
- 20-40s:  Medium   (velocidade +50%, spawn -50%)
- 40-60s:  Hard     (velocidade +100%, spawn -75%)
- 60+s:    Extreme  (máxima velocidade, spawn mínimo)
-```
-
----
-
-## 🔧 Extensibilidade
-
-O projeto foi arquitetado para expansão fácil:
-
-### Adicionar Novo Inimigo
-
-```python
-# components/alien.py
-class Alien(Entity):
-    def __init__(self, x, y):
-        super().__init__(x, y, 30, 30)
-        self.health = 5
-    
-    def _build_image(self):
-        # Draw seu visual
-        pass
-    
-    def update(self):
-        # Sua lógica de movimento
-        pass
-```
-
-Pronto! Adicione ao `game.py`:
-```python
-alien_group = pygame.sprite.Group()
-hits = pygame.sprite.groupcollide(bullet_group, alien_group, ...)
-```
-
-### Adicionar Nova Mecânica
-
-Simplesmente estenda `settings.py` e a lógica em `game.py`. Nada quebra a base.
-
----
-
-## 📝 Conclusão
-
-Guardians of Space demonstra **engenharia de software prática**: separação de responsabilidades, cálculos precisos de física 2D, e arquitetura escalável. É tanto um jogo funcional quanto um **portfolio de boas práticas**.
-
-**Próximas melhorias potenciais:**
-- [ ] Sistema de soundscape
-- [ ] Partículas e efeitos visuais
-- [ ] Mais tipos de inimigos
-- [ ] Boss fights
-- [ ] Leaderboard persistente
-- [ ] Modo multiplayer
+> A tela de game over distingue os dois casos com mensagens diferentes.

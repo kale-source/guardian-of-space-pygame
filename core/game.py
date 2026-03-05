@@ -74,7 +74,7 @@ class Game:
         """Atualizar lógica do jogo"""
         # Pequenos hotkeys
         for event in events:
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
                 self.star_field.toggle()
 
         # Timer
