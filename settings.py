@@ -23,8 +23,8 @@ class Settings(BaseSettings):
     APP_VERSION: str = Field(default="1.0.0", description="Versão do jogo")
     
     # Tela
-    WIDTH: int = Field(default=800, description="Largura da janela")
-    HEIGHT: int = Field(default=600, description="Altura da janela")
+    WIDTH: int = Field(default=1080, description="Largura da janela")
+    HEIGHT: int = Field(default=720, description="Altura da janela")
     FPS: int = Field(default=60, description="Frames por segundo")
     TITLE: str = Field(default="Guardians Of Space", description="Título da janela")
     

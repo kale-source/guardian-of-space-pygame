@@ -30,7 +30,9 @@ class Game:
         pygame.display.set_caption(settings.TITLE)
         
         # Estado atual do jogo
-        self.game_state = "playing"
+        self.game_state = "start_screen"
+        self.paused = False
+        self.pause_start = 0
         
         # Inicializar jogo
         self._init_playing()
@@ -52,10 +54,21 @@ class Game:
             for event in events:
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    if self.paused:
+                        # resuming
+                        self._start_ticks += pygame.time.get_ticks() - self.pause_start
+                    else:
+                        # pausing
+                        self.pause_start = pygame.time.get_ticks()
+                    self.paused = not self.paused
 
             # Executar lógica baseado no estado
-            if self.game_state == "playing":
-                self._update_playing(events)
+            if self.game_state == "start_screen":
+                self._draw_start_screen(events)
+            elif self.game_state == "playing":
+                if not self.paused:
+                    self._update_playing(events)
                 self._draw_playing()
             elif self.game_state == "game_over":
                 self._draw_game_over(events)
@@ -65,6 +78,34 @@ class Game:
             pygame.display.flip()
 
         pygame.quit()
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # ESTADO: START SCREEN
+    # ═══════════════════════════════════════════════════════════════════════════
+
+    def _draw_start_screen(self, events):
+        """
+        Renderiza a tela inicial:
+        - Exibe o título do jogo.
+        - Aguarda ESPAÇO para iniciar o jogo.
+        """
+        self.screen.fill((0, 0, 0))
+
+        # Título
+        title = settings.FONT_MAIN.render("Dungeons of Space", True, settings.WHITE)
+        title_rect = title.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2 - 50))
+        self.screen.blit(title, title_rect)
+
+        # Instrução
+        start_text = settings.FONT_SUBTITLE.render("Pressione ESPAÇO para começar", True, (150, 150, 150))
+        start_rect = start_text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2 + 50))
+        self.screen.blit(start_text, start_rect)
+
+        # Input
+        for event in events:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                self.game_state = "playing"
+                self._init_playing()
 
     # ═══════════════════════════════════════════════════════════════════════════
     # ESTADO: PLAYING
@@ -189,13 +230,27 @@ class Game:
         self.player.draw(self.screen)
 
         # HUD
-        hud = settings.FONT_DETAILS.render(
-            f"Segundos: {self.seconds}   Level: {self.level}   "
-            f"Score: {self.score}   Escaparam: {self.escaped_meteors}/{settings.MAX_ESCAPED_METEORS}   "
-            f"Próximo upgrade: {self._next_upgrade_at - self.total_kills}",
-            True, settings.WHITE,
+        small_font = pygame.font.SysFont("arial", 16)
+        hud_text = (
+            f"Seg: {self.seconds} | Lv: {self.level} | "
+            f"Score: {self.score} | Esc: {self.escaped_meteors}/{settings.MAX_ESCAPED_METEORS} | "
+            f"Up: {self._next_upgrade_at - self.total_kills}"
         )
-        self.screen.blit(hud, (10, 10))
+        hud = small_font.render(hud_text, True, settings.WHITE)
+        
+        # Fundo do HUD
+        pygame.draw.rect(self.screen, (30, 30, 30), (0, 0, settings.WIDTH, 25))
+        
+        self.screen.blit(hud, (10, 5))
+
+        if self.paused:
+            pause_text = settings.FONT_MAIN.render("PAUSADO", True, settings.WHITE)
+            pause_rect = pause_text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2))
+            self.screen.blit(pause_text, pause_rect)
+            
+            resume_text = settings.FONT_DETAILS.render("Aperte ESC para voltar ao jogo", True, settings.WHITE)
+            resume_rect = resume_text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2 + 50))
+            self.screen.blit(resume_text, resume_rect)
 
     # ═══════════════════════════════════════════════════════════════════════════
     # ESTADO: GAME OVER
@@ -253,14 +308,24 @@ class Game:
         title_rect = title.get_rect(center=(settings.WIDTH // 2, 100))
         self.screen.blit(title, title_rect)
 
-        # Opções
-        speed_text = settings.FONT_DETAILS.render("(1) Velocidade", True, settings.WHITE)
-        damage_text = settings.FONT_DETAILS.render("(2) Dano", True, settings.WHITE)
-        cooldown_bullet_text = settings.FONT_DETAILS.render("(3) Diminuir Cooldown", True, settings.WHITE)
+        # Opções com caixas
+        options = [
+            "(1) Velocidade",
+            "(2) Dano",
+            "(3) Diminuir Cooldown"
+        ]
+        for i, opt in enumerate(options):
+            text = settings.FONT_DETAILS.render(opt, True, settings.WHITE)
+            rect = pygame.Rect(settings.WIDTH // 2 - 150, 220 + i * 80, 300, 50)
+            pygame.draw.rect(self.screen, (50, 50, 50), rect)  # fundo cinza
+            pygame.draw.rect(self.screen, settings.WHITE, rect, 2)  # borda branca
+            text_rect = text.get_rect(center=rect.center)
+            self.screen.blit(text, text_rect)
 
-        self.screen.blit(speed_text, (settings.WIDTH // 2 - 100, 250))
-        self.screen.blit(damage_text, (settings.WIDTH // 2 - 100, 350))
-        self.screen.blit(cooldown_bullet_text, (settings.WIDTH // 2 - 100, 450))
+        # Instrução
+        instruction = settings.FONT_SUBTITLE.render("Pressione 1, 2 ou 3 para escolher", True, (150, 150, 150))
+        instr_rect = instruction.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT - 100))
+        self.screen.blit(instruction, instr_rect)
 
         # Input
         for event in events:

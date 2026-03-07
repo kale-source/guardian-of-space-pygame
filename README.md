@@ -35,7 +35,12 @@ O projeto foi arquitetado com separação clara de responsabilidades, sendo esca
 | `ESPAÇO` (tap) | Disparar bala normal |
 | `ESPAÇO` (segurar + soltar) | Carregar e disparar tiro potencializado |
 | `T` | Ligar/desligar estrelas do fundo |
-| `ESPAÇO` | Reiniciar após game over |
+| `ESC` | Pausar/despausar o jogo |
+| `ESPAÇO` | Iniciar jogo (tela inicial) ou reiniciar após game over |
+
+### Tela Inicial
+
+Ao iniciar o jogo, uma tela inicial é exibida com o título "Guardians of Space". Pressione `ESPAÇO` para começar a jogar.
 
 ### Sistema de Tiro Carregado
 
@@ -59,6 +64,10 @@ O canto superior esquerdo da tela exibe em tempo real:
 - **10 meteoros** escapando pela base da tela
 
 A tela de game over distingue os dois casos com mensagens diferentes e exibe as estatísticas finais da partida.
+
+### Sistema de Pause
+
+O jogo pode ser pausado a qualquer momento pressionando `ESC`. Durante a pausa, o tempo é congelado, e uma mensagem "PAUSADO" é exibida no centro da tela. Pressione `ESC` novamente para retomar o jogo.
 
 ---
 
@@ -99,7 +108,7 @@ Os upgrades são permanentes e acumulativos durante a partida — não há limit
 
 ## 🏗️ Arquitetura
 
-O projeto segue o padrão **State Machine** combinado com uma hierarquia de entidades baseada em herança, integrada ao sistema de sprites do Pygame.
+O projeto segue uma arquitetura baseada em estados gerenciados na classe `Game`, combinada com uma hierarquia de entidades baseada em herança, integrada ao sistema de sprites do Pygame.
 
 ### Estados do Jogo
 
@@ -117,6 +126,12 @@ O projeto segue o padrão **State Machine** combinado com uma hierarquia de enti
     │    ┌──────────────┐
     └────│ UpgradeState │  (a cada 15 kills)
          └──────────────┘
+         │
+         │ ESPAÇO
+         ▼
+    ┌─────────────┐
+    │StartScreen  │
+    └─────────────┘
 ```
 
 ### Hierarquia de Entidades
@@ -160,18 +175,13 @@ guardians-of-space-pygame/
 │
 ├── main.py                  # Ponto de entrada
 ├── settings.py              # Todas as constantes e configurações
+├── requirements.txt         # Dependências do projeto
+├── README.md                # Documentação do projeto
 ├── .env                     # Variáveis de ambiente (opcional)
 │
 ├── core/
 │   ├── entity.py            # Classe base Entity(pygame.sprite.Sprite)
-│   ├── state_manager.py     # Gerencia transições entre estados
-│   └── game.py              # Loop principal + inicialização
-│
-├── states/
-│   ├── base_state.py        # Contrato abstrato (ABC)
-│   ├── playing_state.py     # Lógica do jogo em execução
-│   ├── game_over_state.py   # Tela de fim de jogo
-│   └── upgrade_state.py     # Menu de seleção de upgrade
+│   └── game.py              # Loop principal + gerenciamento de estados
 │
 ├── components/
 │   ├── player.py            # Nave do jogador
